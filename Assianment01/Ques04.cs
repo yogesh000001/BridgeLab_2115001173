@@ -1,35 +1,36 @@
 using System;
-using System.Text;
-using System.Diagnostics;
 
-class Program
-{
-    static void ComparePerformance(int iterations)
-    {
-        Stopwatch stopwatch = new Stopwatch();
-        stopwatch.Start();
-        string str = "";
-        for (int i = 0; i < iterations; i++)
-        {
-            str += "Hello ";
-        }
-        stopwatch.Stop();
-        Console.WriteLine("String Concatenation Time: " + stopwatch.ElapsedMilliseconds + " ms");
-
-        stopwatch.Restart();
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < iterations; i++)
-        {
-            sb.Append("Hello ");
-        }
-        stopwatch.Stop();
-        Console.WriteLine("StringBuilder Time: " + stopwatch.ElapsedMilliseconds + " ms");
+class FibonacciComparison{
+    public static int FibonacciRecursive(int n){
+        if (n <= 1) return n;
+        return FibonacciRecursive(n - 1) + FibonacciRecursive(n - 2);
     }
 
-    static void Main()
-    {
-        Console.Write("Enter the number of iterations: ");
-        int iterations = int.Parse(Console.ReadLine());
-        ComparePerformance(iterations);
+    public static int FibonacciIterative(int n){
+        int a = 0, b = 1, sum;
+        for (int i = 2; i <= n; i++){
+            sum = a + b;
+            a = b;
+            b = sum;
+        }
+        return b;
+    }
+
+    public static void Main(){
+        int[] testCases = {10, 30, 50};
+
+        foreach (int n in testCases){
+            var start = DateTime.Now;
+            Console.WriteLine($"Recursive Fibonacci ({n}): {FibonacciRecursive(n)}");
+            var recursiveDuration = DateTime.Now - start;
+
+            start = DateTime.Now;
+            Console.WriteLine($"Iterative Fibonacci ({n}): {FibonacciIterative(n)}");
+            var iterativeDuration = DateTime.Now - start;
+
+            Console.WriteLine($"Recursive Duration ({n}): {recursiveDuration.TotalMilliseconds} ms");
+            Console.WriteLine($"Iterative Duration ({n}): {iterativeDuration.TotalMilliseconds} ms");
+            Console.WriteLine();
+        }
     }
 }
